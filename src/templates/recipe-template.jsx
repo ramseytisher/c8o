@@ -4,6 +4,8 @@ import { Link, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 
+import Img from "gatsby-image"
+
 import Layout from "../components/layout"
 
 const shortcodes = { Link }
@@ -14,6 +16,7 @@ export default ({ data }) => {
   return (
     <Layout>
       <h1>{data.mdx.frontmatter.title}</h1>
+      <Img fixed={data.mdx.fields.cover.childImageSharp.fixed} />
       <MDXProvider components={shortcodes}>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
       </MDXProvider>
@@ -28,6 +31,15 @@ export const query = graphql`
       body
       frontmatter {
         title
+      }
+      fields {
+        cover {
+          childImageSharp {
+            fixed(width: 600) {
+              ...GatsbyImageSharpFixed
+            }
+          }
+        }
       }
     }
   }

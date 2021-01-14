@@ -11,6 +11,11 @@ exports.onCreateNode = ({ node, getNode, actions, reporter }) => {
             name: `slug`,
             value: slug
         })
+        createNodeField({
+            node,
+            name: `cover`,
+            value: `./images/cover.jpg`
+        })
     }
 }
 
@@ -31,7 +36,6 @@ exports.createPages = async ({ graphql, actions }) => {
     `)
 
     recipeNodes.data.allMdx.nodes.forEach(node => {
-        console.log('Node: ', node)
         createPage({
             path: node.fields.slug,
             component: path.resolve(`./src/templates/recipe-template.jsx`),

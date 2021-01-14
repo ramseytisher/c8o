@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `🍲 Composito 🍽️`,
+    title: `🍲 com·pò·ṣi·to 🍽️`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
   },
@@ -25,7 +25,16 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         name: `recipes`,
-        path: `${__dirname}/content/recipes`
+        path: `${__dirname}/content/recipes`,
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1200,
+              sizeByPixelDensity: true,
+            },
+          },
+        ],
       }
     },
     `gatsby-plugin-sharp`,
