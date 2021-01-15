@@ -3,12 +3,14 @@ import { Link, graphql } from "gatsby"
 
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import styled from "styled-components"
 
 import Img from "gatsby-image"
 
 import Layout from "../components/layout"
 
 const shortcodes = { Link }
+
 
 // a good one: https://cucumber.io/blog/bdd/example-mapping-introduction/
 

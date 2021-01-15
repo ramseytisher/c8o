@@ -6,11 +6,42 @@
  */
 
 import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
+import styled from "styled-components"
 
-import Header from "./header"
 import "./layout.css"
+
+const Header = styled.header`
+  background: #f4e8c1;
+  margin-bottom: 1.45rem;
+`
+
+const HeaderContainer = styled.div`
+  margin: 0 auto;
+  max-width: 760px;
+  padding: 1.45rem 1.0875rem;
+`
+
+const MainContainer = styled.div`
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.0875rem 1.45rem;
+`
+
+const H1 = styled.h1`
+  margin: 0;
+  text-align: center;
+`
+
+const Title = styled(Link)`
+  color: #331e38;
+  text-decoration: none;
+`
+
+const Footer = styled.footer`
+  margin: 2rem;
+  text-align: center;
+`
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -25,31 +56,23 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
+      <Header>
+        <HeaderContainer>
+          <H1>
+            <Title to="/" style={{ textDecoration: `none` }}>
+              {data.site.siteMetadata.title}
+            </Title>
+          </H1>
+        </HeaderContainer>
+      </Header>
+      <MainContainer>
         <main>{children}</main>
-        <footer
-          style={{
-            marginTop: `2rem`,
-          }}
-        >
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
+      </MainContainer>
+      <Footer>
+        {new Date().getFullYear()}, Built for 🍲 🍽️ 😋
+      </Footer>
     </>
   )
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 }
 
 export default Layout
