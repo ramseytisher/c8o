@@ -6,7 +6,7 @@ import styled from "styled-components"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const Container = styled.div`
+const Box = styled.div`
   margin: 2rem auto;
   max-width: 960px;
   display: flex;
@@ -20,20 +20,55 @@ const RecipeLink = styled.div`
   padding: 20px;
 `
 
+const Card = styled.div`
+  position: relative;
+  margin: 10px;
+`
+
+const Image = styled(Img)`
+  height: 300px;
+  width: 300px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+`
+
+const Banner = styled.div`
+  background: rgba(250, 240, 202, 0.7); /*  70% opaque green */
+  padding: 10px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 70%;
+  margin: 0 auto;
+  width: 90%;
+  height: 25%;
+  text-align: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+`
+
+const Text = styled.h3`
+  opacity: 1;
+  color: #293241;
+`
+
 const IndexPage = ({ data }) => (
   <Layout>
     <SEO />
-    <Container>
+    <Box>
       {data.pages.nodes.map(({ id, frontmatter, fields }) => (
+        <Card>
           <Link to={fields.slug}>
-            <RecipeLink>
-              {frontmatter.title}
-              <br />
-              <Img fixed={fields.cover.childImageSharp.fixed} />
-            </RecipeLink>
+            <Image fixed={fields.cover.childImageSharp.fixed} />
+            <Banner>
+              <Text>{frontmatter.title}</Text>
+            </Banner>
           </Link>
+        </Card>
       ))}
-    </Container>
+    </Box>
   </Layout>
 )
 
@@ -55,7 +90,7 @@ export const pageQuery = graphql`
           slug
           cover {
             childImageSharp {
-              fixed(width: 300) {
+              fixed(width: 300, height: 300) {
                 ...GatsbyImageSharpFixed
               }
             }
