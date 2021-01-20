@@ -31,11 +31,13 @@ const Image = styled(Img)`
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  @media (max-width: 500px) {
+    width: 95vw;
+  }
 `
 
 const Banner = styled.div`
-  background: rgba(250, 240, 202, 0.7); /*  70% opaque green */
-  padding: 10px;
+  background: rgba(250, 240, 202, 0.7);
   position: absolute;
   left: 0;
   right: 0;
@@ -47,11 +49,15 @@ const Banner = styled.div`
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 `
 
 const Text = styled.h3`
   opacity: 1;
   color: #293241;
+  margin: 0;
 `
 
 const IndexPage = ({ data }) => (
@@ -61,7 +67,7 @@ const IndexPage = ({ data }) => (
       {data.pages.nodes.map(({ id, frontmatter, fields }) => (
         <Card>
           <Link to={fields.slug}>
-            <Image fixed={fields.cover.childImageSharp.fixed} />
+            <Image fluid={fields.cover.childImageSharp.fluid} />
             <Banner>
               <Text>{frontmatter.title}</Text>
             </Banner>
@@ -90,8 +96,8 @@ export const pageQuery = graphql`
           slug
           cover {
             childImageSharp {
-              fixed(width: 300, height: 300) {
-                ...GatsbyImageSharpFixed
+              fluid(maxWidth: 300) {
+                ...GatsbyImageSharpFluid
               }
             }
           }
