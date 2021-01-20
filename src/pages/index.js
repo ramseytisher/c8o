@@ -96,7 +96,7 @@ export const pageQuery = graphql`
           slug
           cover {
             childImageSharp {
-              fluid(maxWidth: 300) {
+              fluid(maxWidth: 500) {
                 ...GatsbyImageSharpFluid
               }
             }
