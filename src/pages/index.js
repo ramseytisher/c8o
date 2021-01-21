@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link, graphql } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
@@ -60,23 +60,45 @@ const Text = styled.h3`
   margin: 0;
 `
 
-const IndexPage = ({ data }) => (
-  <Layout>
-    <SEO />
-    <Box>
-      {data.pages.nodes.map(({ id, frontmatter, fields }) => (
-        <Card>
-          <Link to={fields.slug}>
-            <Image fluid={fields.cover.childImageSharp.fluid} />
-            <Banner>
-              <Text>{frontmatter.title}</Text>
-            </Banner>
-          </Link>
-        </Card>
-      ))}
-    </Box>
-  </Layout>
-)
+const IndexPage = ({ data }) => {
+  const [search, setSearch] = useState("")
+  const [results, setResults] = useState(data.pages.nodes)
+
+  useEffect(() => {
+    console.log("Search is: ", search)
+    if (search) {
+      let found = data.pages.nodes.filter(({ frontmatter }) => {
+        const str = frontmatter.title.toString().toUpperCase()
+        console.log("Str: ", str)
+        return str.includes(search.trim().toUpperCase())
+      })
+      setResults(found)
+    } else {
+      console.log("No Search")
+      setResults(data.pages.nodes)
+    }
+  }, [search])
+
+  return (
+    <Layout>
+      <SEO />
+      <input onChange={e => setSearch(e.target.value)} value={search} />
+      <button onClick={() => setSearch('')}>clear</button>
+      <Box>
+        {results.map(({ id, frontmatter, fields }) => (
+          <Card>
+            <Link to={fields.slug}>
+              <Image fluid={fields.cover.childImageSharp.fluid} />
+              <Banner>
+                <Text>{frontmatter.title}</Text>
+              </Banner>
+            </Link>
+          </Card>
+        ))}
+      </Box>
+    </Layout>
+  )
+}
 
 export default IndexPage
 
