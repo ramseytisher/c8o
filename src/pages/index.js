@@ -6,6 +6,11 @@ import styled from "styled-components"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
 const Box = styled.div`
   margin: 2rem auto;
   max-width: 960px;
@@ -14,10 +19,6 @@ const Box = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-`
-
-const RecipeLink = styled.div`
-  padding: 20px;
 `
 
 const Card = styled.div`
@@ -60,6 +61,24 @@ const Text = styled.h3`
   margin: 0;
 `
 
+const Input = styled.input`
+  text-align: center;
+  margin-right: 10px;
+  width: 60%;
+  height: 2rem;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  border-top: none;
+  border-bottom: 1px solid #DDD;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
+  transition: width 0.4s ease-in-out;
+  :focus {
+    width: 80%;
+    height: 2.5rem;
+  }
+`
+
 const IndexPage = ({ data }) => {
   const [search, setSearch] = useState("")
   const [results, setResults] = useState(data.pages.nodes)
@@ -68,8 +87,9 @@ const IndexPage = ({ data }) => {
     console.log("Search is: ", search)
     if (search) {
       let found = data.pages.nodes.filter(({ frontmatter }) => {
-        const str = frontmatter.title.toString().toUpperCase()
-        console.log("Str: ", str)
+        const str =
+          frontmatter.title.toString().toUpperCase() +
+          frontmatter.tags.toString().toUpperCase()
         return str.includes(search.trim().toUpperCase())
       })
       setResults(found)
@@ -77,13 +97,15 @@ const IndexPage = ({ data }) => {
       console.log("No Search")
       setResults(data.pages.nodes)
     }
-  }, [search])
+  }, [data.pages.nodes, search])
 
   return (
     <Layout>
       <SEO />
-      <input onChange={e => setSearch(e.target.value)} value={search} />
-      <button onClick={() => setSearch('')}>clear</button>
+      <SearchContainer>
+        <Input onChange={e => setSearch(e.target.value)} value={search} />
+        <button onClick={() => setSearch("")}>clear</button>
+      </SearchContainer>
       <Box>
         {results.map(({ id, frontmatter, fields }) => (
           <Card>
@@ -113,6 +135,7 @@ export const pageQuery = graphql`
         frontmatter {
           title
           date
+          tags
         }
         fields {
           slug
